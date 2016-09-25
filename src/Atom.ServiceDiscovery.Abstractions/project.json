@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "authors": ["Yoann Cosniam"],
+  "description": "Atom service discovery abstrations",
+
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    },
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration": "1.0.0",
+         "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+
+    "Atom.Common":  {
+      "version" : "1.0.0",
+      "Target" : "Project"
+    }
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  },
+
+  "tooling": {
+    "defaultNamespace": "Atom.ServiceDiscovery"
+  }
+}

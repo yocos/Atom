@@ -7,9 +7,24 @@
         {
             "taskName": "build",
             "args": [
+                "${workspaceRoot}\\src\\Atom.Common\\project.json",
+                "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Abstractions\\project.json",
+                "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Consul\\project.json",
                 "${workspaceRoot}\\samples\\µServiceSimple\\project.json"
             ],
             "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        }
+        ,
+        {
+            "taskName": "restore",
+            "args": [
+                "${workspaceRoot}\\src\\Atom.Common\\project.json",
+                "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Abstractions\\project.json",
+                "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Consul\\project.json",
+                "${workspaceRoot}\\samples\\µServiceSimple\\project.json"
+            ],            
+            "echoCommand": true,
             "problemMatcher": "$msCompile"
         }
     ]
