@@ -10,6 +10,6 @@ namespace Atom.ServiceDiscovery.Abstractions
         
         void UnregisterService(IConfiguration configuration);
         
-        void unRegisterService(string serviceName);        
+        void UnregisterService(string serviceName);        
     }
 }

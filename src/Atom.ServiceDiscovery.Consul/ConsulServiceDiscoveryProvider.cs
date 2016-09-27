@@ -28,7 +28,7 @@ namespace Atom.ServiceDiscovery.Consul
             throw new NotImplementedException();
         }
 
-        public void unRegisterService(string serviceName)
+        public void UnregisterService(string serviceName)
         {
             throw new NotImplementedException();
         }

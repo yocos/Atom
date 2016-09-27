@@ -22,10 +22,11 @@ namespace µServiceSimple
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IApplicationLifetime applicationLifetime)
         {
             //Register configuration
             services.AddSingleton<IConfiguration>(_ => Configuration); 
+            services.AddSingleton<IApplicationLifetime>(applicationLifetime);
             
             // Add framework services.
             services.AddMvc();
@@ -45,12 +46,10 @@ namespace µServiceSimple
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc() 
+            app.UseMvc()                
                .UseServiceDiscovery(configuration); // Register The Service Discovery Server
 
             // app.UseMonitoring(configuration)
-
-
         }
 
         private void CloseApplication()
