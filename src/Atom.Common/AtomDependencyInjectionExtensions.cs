@@ -1,6 +1,6 @@
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class AtomExtensions
+    public static class AtomDependencyInjectionExtensions
     {
         public static IServiceCollection AddAtom(this IServiceCollection services)
         {
