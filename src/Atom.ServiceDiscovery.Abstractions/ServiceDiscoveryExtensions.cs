@@ -8,7 +8,6 @@ using Atom.ServiceDiscovery.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Atom.Common;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -48,22 +47,14 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder UseServiceDiscovery(this IApplicationBuilder app, string serviceName, int servicePort, string version)
         {
             var ServiceDiscovery = app.ApplicationServices.GetRequiredService<IServiceDiscoveryProvider>();
-<<<<<<< HEAD
-            var appLifetime = app.ApplicationServices.GetRequiredService<IApplicationLifetime>();
+            var applicationLifetime = app.ApplicationServices.GetRequiredService<IApplicationLifetime>();
             
              //Register service
             ServiceDiscovery.RegisterService(serviceName, NetworkUtils.GetHostName(), servicePort, version);
 
              //Unregister during application is stopping
-            appLifetime.ApplicationStopping.Register(() => ServiceDiscovery.UnregisterService(serviceName));
+            applicationLifetime.ApplicationStopping.Register(() => ServiceDiscovery.UnregisterService(serviceName));
 
-=======
-              var applicationLifeTime = app.ApplicationServices.GetRequiredService<IApplicationLifetime>();
-            
-            ServiceDiscovery.RegisterService(serviceName, NetworkUtils.GetHostName(), servicePort, version);
-
-            applicationLifeTime.ApplicationStopping.Register(() => {ServiceDiscovery.UnregisterService(serviceName);});
->>>>>>> 8f5cdf63f427872bc96b5f2adb0cad750165606c
             return app;
         }
     }

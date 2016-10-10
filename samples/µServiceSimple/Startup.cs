@@ -48,11 +48,7 @@ namespace µServiceSimple
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-<<<<<<< HEAD
-            app.UseMvc()                 
-=======
             app.UseMvc()                
->>>>>>> 8f5cdf63f427872bc96b5f2adb0cad750165606c
                .UseServiceDiscovery(configuration); // Register The Service Discovery Server
 
             // app.UseMonitoring(configuration)
