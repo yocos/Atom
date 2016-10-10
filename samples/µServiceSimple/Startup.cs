@@ -12,11 +12,12 @@ namespace µServiceSimple
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(env.ContentRootPath)                
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -26,7 +27,8 @@ namespace µServiceSimple
         {
             //Register configuration
             services.AddSingleton<IConfiguration>(_ => Configuration); 
-            
+            services.AddSingleton<IConfigurationRoot>(_ => Configuration); 
+
             // Add framework services.
             services.AddMvc();
             
@@ -39,23 +41,16 @@ namespace µServiceSimple
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime, IHostingEnvironment env, ILoggerFactory loggerFactory, IConfiguration configuration)
-        {
-            applicationLifetime.ApplicationStopping.Register(CloseApplication);
-
+        {            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc() 
+            app.UseMvc()                 
                .UseServiceDiscovery(configuration); // Register The Service Discovery Server
 
             // app.UseMonitoring(configuration)
 
 
-        }
-
-        private void CloseApplication()
-        {
-            
         }
     }
 }

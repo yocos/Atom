@@ -21,8 +21,7 @@ namespace µServiceSimple
             var host = new WebHostBuilder()
                 .UseConfiguration(config)
                 .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                .UseContentRoot(Directory.GetCurrentDirectory())              
                 .UseStartup<Startup>()
                 .Build();
 

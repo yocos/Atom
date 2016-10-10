@@ -10,7 +10,8 @@
     },
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
     "Microsoft.Extensions.Configuration": "1.0.0",
-         "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
 
     "Atom.Common":  {
       "version" : "1.0.0",
@@ -20,14 +21,14 @@
 
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
     }
   },
 
   "tooling": {
     "defaultNamespace": "Atom.ServiceDiscovery"
+  },
+
+  "buildOptions": {
+  "debugType": "portable"  
   }
 }

@@ -17,14 +17,14 @@
 
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
+            
     }
   },
 
   "tooling": {
     "defaultNamespace": "Atom.ServiceDiscovery.Consul"
+  },
+  "buildOptions": {
+  "debugType": "portable"  
   }
 }

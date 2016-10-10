@@ -15,20 +15,21 @@ namespace Atom.ServiceDiscovery.Consul
 
         public void RegisterService(IConfiguration configuration)
         {
-            throw new NotImplementedException();
+       //     throw new NotImplementedException();
         }
 
         public void RegisterService(string serviceName, string hostname, int servicePort, string version)
-        {
+        {            
+            
             throw new NotImplementedException();
         }
 
         public void UnregisterService(IConfiguration configuration)
-        {
+        {            
             throw new NotImplementedException();
         }
 
-        public void unRegisterService(string serviceName)
+        public void UnregisterService(string serviceName)
         {
             throw new NotImplementedException();
         }

@@ -10,15 +10,14 @@
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
+    "netcoreapp1.0": {     
     }
   },
 
   "tooling": {
     "defaultNamespace": "Atom.Common"
+  },
+  "buildOptions": {
+  "debugType": "portable"  
   }
 }
