@@ -10,6 +10,7 @@
                 "${workspaceRoot}\\src\\Atom.Common\\project.json",
                 "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Abstractions\\project.json",
                 "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Consul\\project.json",
+                "${workspaceRoot}\\src\\Atom.CircuitBreaker\\project.json",
                 "${workspaceRoot}\\samples\\µServiceSimple\\project.json"
             ],
             "isBuildCommand": true,
@@ -22,6 +23,7 @@
                 "${workspaceRoot}\\src\\Atom.Common\\project.json",
                 "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Abstractions\\project.json",
                 "${workspaceRoot}\\src\\Atom.ServiceDiscovery.Consul\\project.json",
+                "${workspaceRoot}\\src\\Atom.CircuitBreaker\\project.json",
                 "${workspaceRoot}\\samples\\µServiceSimple\\project.json"
             ],            
             "echoCommand": true,
