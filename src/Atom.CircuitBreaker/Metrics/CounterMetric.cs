@@ -5,5 +5,10 @@ namespace Atom.CircuitBreaker.Metrics
         CommandSuccess = 0,
         CommandFailure = 1,
         //Concurrent,
+
+
+
+
+
     }
 }
