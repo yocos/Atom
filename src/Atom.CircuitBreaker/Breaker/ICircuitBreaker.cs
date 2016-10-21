@@ -2,7 +2,7 @@ using Atom.CircuitBreaker.Metrics;
 
 namespace Atom.CircuitBreaker.Breaker
 {
-    internal interface ICircuitBreaker
+    public interface ICircuitBreaker
     {
         bool IsAllowing();
         void MarkSuccess(long elapsedMillis);

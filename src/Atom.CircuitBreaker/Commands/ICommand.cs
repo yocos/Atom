@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Atom.CircuitBreaker.Commands
 {
-    /// <see cref="Command"/>
-    /// <typeparam name="TResult">The type of the result returned by the Command's execution.</typeparam>
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ICommand<TResult>
     {
         /// <summary>

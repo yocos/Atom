@@ -1,6 +1,8 @@
-using System;
 using Atom.CircuitBreaker.Key;
-using Microsoft.Extensions.Configuration;
+using Atom.Common;
+using System.Collections.Concurrent;
+using System;
+
 
 namespace Atom.CircuitBreaker.Commands
 {
@@ -11,7 +13,8 @@ namespace Atom.CircuitBreaker.Commands
     /// 
     /// For a detailed overview, see https://github.com/hudl/Mjolnir/wiki.
     /// </summary>
-    public abstract class BaseCommand
+
+    public abstract class BaseCommand /*: Command*/
     {
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromMilliseconds(2000);
 
@@ -20,9 +23,7 @@ namespace Atom.CircuitBreaker.Commands
         private readonly GroupKey _breakerKey;
         private readonly GroupKey _bulkheadKey;
         private readonly TimeSpan _constructorTimeout;
-        private readonly CacheCommand _CacheCommand;
-
-        private readonly IConfiguration _Configuration;
+        private readonly ICommandContext _CommandContext;
 
         // 0 == not yet invoked, > 0 == invoked
         // This is modified by the invoker with consideration for concurrency.
@@ -48,52 +49,27 @@ namespace Atom.CircuitBreaker.Commands
         /// <param name="group">Logical grouping for the command, usually the owning team. Avoid using dots.</param>
         /// <param name="breakerKey">Breaker to use for this command.</param>
         /// <param name="bulkheadKey">Bulkhead to use for this command.</param>
-        /// <param name="defaultTimeout">Timeout to enforce if not otherwise provided. </param>        
-        protected BaseCommand(string group, string breakerKey, string bulkheadKey, CacheCommand cacheCommand, IConfiguration configuration, TimeSpan? defaultTimeout)
-            : this(group, null, breakerKey, bulkheadKey, cacheCommand, configuration, defaultTimeout)
+        /// <param name="defaultTimeout">Timeout to enforce if not otherwise provided. </param>
+        protected BaseCommand(ICommandContext ctx, string group, string breakerKey, string bulkheadKey, TimeSpan? defaultTimeout)
+            : this(ctx, group, null, breakerKey, bulkheadKey, defaultTimeout)
         { }
 
-        internal BaseCommand(string group, string name, string breakerKey, string bulkheadKey, CacheCommand cacheCommand, IConfiguration configuration, TimeSpan? defaultTimeout = null)
+        internal BaseCommand(ICommandContext ctx, string group, string name, string breakerKey, string bulkheadKey, TimeSpan? defaultTimeout = null)
         {
-            if (string.IsNullOrWhiteSpace(group))
-            {
-                throw new ArgumentNullException(nameof(group));
-            }
 
-            if (string.IsNullOrWhiteSpace(breakerKey))
-            {
-                throw new ArgumentNullException(nameof(breakerKey));
-            }
-
-            if (string.IsNullOrWhiteSpace(bulkheadKey))
-            {
-                throw new ArgumentNullException(nameof(bulkheadKey));
-            }
-
-            if (cacheCommand != null)
-            {
-                throw new ArgumentNullException(nameof(cacheCommand));
-            }
-
-            if (configuration != null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            if (defaultTimeout != null && defaultTimeout.Value.TotalMilliseconds <= 0)
+            if (defaultTimeout.HasValue && defaultTimeout.Value.TotalMilliseconds <= 0)
             {
                 throw new ArgumentException(
                     string.Format("Positive default timeout is required if passed (received invalid timeout of {0}ms)", defaultTimeout.Value.TotalMilliseconds),
                     "defaultTimeout");
             }
 
-            _group = GroupKey.Named(group);
+            _group = GroupKey.Named(Check.NotEmpty(group, nameof(group)));
             _name = string.IsNullOrWhiteSpace(name) ? GenerateAndCacheName(Group) : CacheProvidedName(Group, name);
-            _breakerKey = GroupKey.Named(breakerKey);
-            _bulkheadKey = GroupKey.Named(bulkheadKey);
+            _breakerKey = GroupKey.Named(Check.NotEmpty(breakerKey, nameof(breakerKey)));
+            _bulkheadKey = GroupKey.Named(Check.NotEmpty(bulkheadKey, nameof(bulkheadKey)));
             _constructorTimeout = defaultTimeout ?? DefaultTimeout;
-            _CacheCommand = cacheCommand;
-            _Configuration = configuration;
+            _CommandContext = Check.NotNull(ctx, nameof(ctx)); ;
         }
 
         // Default Timeout: The system default timeout (2 seconds). Used if nothing else is set.
@@ -136,10 +112,10 @@ namespace Atom.CircuitBreaker.Commands
             return _constructorTimeout;
         }
 
-        private string CacheProvidedName(GroupKey group, string name)
+        private static string CacheProvidedName(GroupKey group, string name)
         {
             var cacheKey = new Tuple<string, GroupKey>(name, group);
-            return _CacheCommand.ProvidedNameCache.GetOrAdd(cacheKey, t => cacheKey.Item2.Name.Replace(".", "-") + "." + name.Replace(".", "-"));
+            return ProvidedNameCache.GetOrAdd(cacheKey, t => cacheKey.Item2.Name.Replace(".", "-") + "." + name.Replace(".", "-"));
         }
 
         // Since creating the Command's name is non-trivial, we'll keep a local
@@ -147,23 +123,26 @@ namespace Atom.CircuitBreaker.Commands
         // of this string manipulation every time seems like a good idea.
         private string GenerateAndCacheName(GroupKey group)
         {
-            var type = this.GetType();
+
+            var type = GetType();
             var cacheKey = new Tuple<Type, GroupKey>(type, group);
-            return _CacheCommand.GeneratedNameCache.GetOrAdd(cacheKey, t =>
+            return GeneratedNameCache.GetOrAdd(cacheKey, t =>
             {
                 var className = cacheKey.Item1.Name;
-                if (className.EndsWith("Command", StringComparison.OrdinalIgnoreCase))
+                if (className.EndsWith("Command"))
                 {
-                    className = className.Substring(0, className.LastIndexOf("Command", StringComparison.OrdinalIgnoreCase));
+                    className = className.Substring(0, className.LastIndexOf("Command"));
+
                 }
 
                 return cacheKey.Item2.Name.Replace(".", "-") + "." + className;
             });
         }
 
-        private long GetTimeoutConfigurableValue(string commandName)
+        private static long GetTimeoutConfigurableValue(string commandName)
         {
-            return _CacheCommand.TimeoutConfigCache.GetOrAdd(commandName, n => _Configuration.GetValue<long>("atom.command." + commandName + ".Timeout"));
+            /* return TimeoutConfigCache.GetOrAdd(commandName, n => new ConfigurableValue<long>("circuitbreaker.command." + commandName + ".Timeout"));*/
+            return 0; //TODO
         }
 
         /// <summary>
@@ -191,5 +170,23 @@ namespace Atom.CircuitBreaker.Commands
         {
             get { return _bulkheadKey; }
         }
+
+
+        // protected static readonly ConfigurableValue<bool> UseCircuitBreakers = new ConfigurableValue<bool>("mjolnir.useCircuitBreakers", true);
+        // protected static readonly ConfigurableValue<bool> IgnoreCommandTimeouts = new ConfigurableValue<bool>("mjolnir.ignoreTimeouts", false);
+
+        /// <summary>
+        /// Cache of known command names, keyed by Type and group key. Helps
+        /// avoid repeatedly generating the same Name for every distinct command
+        /// instance.
+        /// </summary>
+        protected static readonly ConcurrentDictionary<Tuple<Type, GroupKey>, string> GeneratedNameCache = new ConcurrentDictionary<Tuple<Type, GroupKey>, string>();
+
+        /// <summary>
+        /// Cache of known command names, keyed by provided name and group key. Helps
+        /// avoid repeatedly generating the same Name for every distinct command.
+        /// </summary>
+        protected static readonly ConcurrentDictionary<Tuple<string, GroupKey>, string> ProvidedNameCache = new ConcurrentDictionary<Tuple<string, GroupKey>, string>();
+
     }
 }

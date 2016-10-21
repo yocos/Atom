@@ -1,6 +1,6 @@
 namespace Atom.CircuitBreaker.Metrics
 {
-    internal class MetricsSnapshot
+    public class MetricsSnapshot
     {
         internal long Total { get; private set; }
         internal int ErrorPercentage { get; private set; }

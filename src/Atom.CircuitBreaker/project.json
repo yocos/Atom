@@ -2,26 +2,28 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-   "Microsoft.NETCore.App": {
+    "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     },
-     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-     "Microsoft.AspNetCore.Http.Abstractions" : "1.0.0",
-     "Microsoft.AspNetCore.Hosting.Abstractions" : "1.0.0",
-     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0"
-     
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Atom.Common": {
+      "version": "1.0.0",
+      "Target": "Project"
+    },
   },
 
   "frameworks": {
-    "netcoreapp1.0": {     
-    }
+    "netcoreapp1.0": {}
   },
 
   "tooling": {
     "defaultNamespace": "Atom.Common"
   },
   "buildOptions": {
-  "debugType": "portable"  
+    "debugType": "portable"
   }
 }

@@ -1,30 +1,28 @@
 {
   "version": "1.0.0-*",
-  "authors": ["Yoann Cosniam"],
+  "authors": [
+    "Yoann Cosniam"
+  ],
   "description": "Atom service discovery connector for Consul HashiCorp.",
-
   "dependencies": {
-      "Microsoft.NETCore.App": {
+    "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     },
-      "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-        "Atom.ServiceDiscovery.Abstractions":  {
-      "version" : "1.0.0",
-      "Target" : "Project"
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Atom.ServiceDiscovery.Abstractions": {
+      "version": "1.0.0",
+      "Target": "Project"
     },
+    "Consul": "0.7.0.2"
   },
-
   "frameworks": {
-    "netcoreapp1.0": {
-            
-    }
+    "netcoreapp1.0": {}
   },
-
   "tooling": {
     "defaultNamespace": "Atom.ServiceDiscovery.Consul"
   },
   "buildOptions": {
-  "debugType": "portable"  
+    "debugType": "portable"
   }
 }

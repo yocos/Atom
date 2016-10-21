@@ -33,8 +33,8 @@ namespace Atom.CircuitBreaker.Commands
         /// <param name="group">Logical grouping for the command, usually the owning team. Avoid using dots.</param>
         /// <param name="isolationKey">Breaker and bulkhead key to use.</param>
         /// <param name="defaultTimeout">Timeout to enforce if not otherwise provided.</param>
-        protected SyncCommand(string group, string isolationKey, TimeSpan defaultTimeout, CacheCommand cacheCommand, IConfiguration configuration)
-            : base(group, isolationKey, isolationKey, cacheCommand, configuration, defaultTimeout)
+        protected SyncCommand(ICommandContext ctx, string group, string isolationKey, TimeSpan defaultTimeout)
+            : base(ctx, group, isolationKey, isolationKey, defaultTimeout)
         { }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace Atom.CircuitBreaker.Commands
         /// <param name="breakerKey">Breaker to use for this command.</param>
         /// <param name="bulkheadKey">Bulkhead to use for this command.</param>
         /// <param name="defaultTimeout">Timeout to enforce if not otherwise provided.</param>
-        protected SyncCommand(string group, string breakerKey, string bulkheadKey, TimeSpan defaultTimeout, CacheCommand cacheCommand, IConfiguration configuration)
-            : base(group, breakerKey, bulkheadKey, cacheCommand, configuration, defaultTimeout)
+        protected SyncCommand(ICommandContext ctx, string group, string breakerKey, string bulkheadKey, TimeSpan defaultTimeout)
+            : base(ctx, group, breakerKey, bulkheadKey, defaultTimeout)
         { }
 
         /// <summary>

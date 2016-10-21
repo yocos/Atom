@@ -13,7 +13,7 @@ namespace Atom.CircuitBreaker.ThreadPool
     /// (i.e. threads) that could instead be used for operations that aren't in the group and are
     /// successfully completing.
     /// </summary>
-    internal interface IIsolationThreadPool
+    public interface IIsolationThreadPool
     {
         void Start();
 
