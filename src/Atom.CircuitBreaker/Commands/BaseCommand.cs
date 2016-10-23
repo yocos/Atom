@@ -14,16 +14,16 @@ namespace Atom.CircuitBreaker.Commands
     /// For a detailed overview, see https://github.com/hudl/Mjolnir/wiki.
     /// </summary>
 
-    public abstract class BaseCommand /*: Command*/
+    public abstract class BaseCommand
     {
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromMilliseconds(2000);
-
         private readonly GroupKey _group;
         private readonly string _name;
         private readonly GroupKey _breakerKey;
         private readonly GroupKey _bulkheadKey;
         private readonly TimeSpan _constructorTimeout;
         private readonly ICommandContext _CommandContext;
+        private CommandOptions _CommandOption;
+        private GroupOptions _GroupOption;
 
         // 0 == not yet invoked, > 0 == invoked
         // This is modified by the invoker with consideration for concurrency.
@@ -68,8 +68,12 @@ namespace Atom.CircuitBreaker.Commands
             _name = string.IsNullOrWhiteSpace(name) ? GenerateAndCacheName(Group) : CacheProvidedName(Group, name);
             _breakerKey = GroupKey.Named(Check.NotEmpty(breakerKey, nameof(breakerKey)));
             _bulkheadKey = GroupKey.Named(Check.NotEmpty(bulkheadKey, nameof(bulkheadKey)));
-            _constructorTimeout = defaultTimeout ?? DefaultTimeout;
+            _constructorTimeout = defaultTimeout ?? TimeSpan.FromMilliseconds(ctx.Options.CurrentValue.Timeout);
             _CommandContext = Check.NotNull(ctx, nameof(ctx)); ;
+
+            _CommandOption = ctx.Options.CurrentValue.Commands[name];
+            _GroupOption = ctx.Options.CurrentValue.Groups[group];
+
         }
 
         // Default Timeout: The system default timeout (2 seconds). Used if nothing else is set.
@@ -99,7 +103,11 @@ namespace Atom.CircuitBreaker.Commands
                 return TimeSpan.FromMilliseconds(invocationTimeoutMillis.Value);
             }
 
-            var configured = GetTimeoutConfigurableValue(_name);
+            long configured = 0;
+            if (_CommandOption.Timeout.HasValue)
+                configured = _CommandOption.Timeout.Value;
+            else if (_GroupOption.Timeout.HasValue)
+                configured = _GroupOption.Timeout.Value;
 
             // We don't want to include 0 here. Since this comes from a potentially non-nullable
             // ConfigurableValue, it's possible (and probably likely) that an unconfigured
@@ -139,12 +147,6 @@ namespace Atom.CircuitBreaker.Commands
             });
         }
 
-        private static long GetTimeoutConfigurableValue(string commandName)
-        {
-            /* return TimeoutConfigCache.GetOrAdd(commandName, n => new ConfigurableValue<long>("circuitbreaker.command." + commandName + ".Timeout"));*/
-            return 0; //TODO
-        }
-
         /// <summary>
         /// The generated command name, used for logging and configuration. Follows the form:
         /// <code>group-key.CommandClassName</code>. Some normalization is performed before
@@ -170,10 +172,6 @@ namespace Atom.CircuitBreaker.Commands
         {
             get { return _bulkheadKey; }
         }
-
-
-        // protected static readonly ConfigurableValue<bool> UseCircuitBreakers = new ConfigurableValue<bool>("mjolnir.useCircuitBreakers", true);
-        // protected static readonly ConfigurableValue<bool> IgnoreCommandTimeouts = new ConfigurableValue<bool>("mjolnir.ignoreTimeouts", false);
 
         /// <summary>
         /// Cache of known command names, keyed by Type and group key. Helps

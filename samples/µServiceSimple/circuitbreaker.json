@@ -1,0 +1,24 @@
+{
+    "CircuitBreaker": {
+        "Timeout": 1000,
+        "Bulkhead": 20,
+        "Groups": {
+            "exemple1": {
+                "timeout": 2000
+            },
+            "exemple2": {
+                "timeout": 2000
+            }
+        },
+        "Commands": {
+            "command1": {
+                "group": "exemple1",
+                "timeout": 3000
+            },
+            "Command2": {
+                "group": "exemple2",
+                "timeout": 3000
+            }
+        }
+    }
+}

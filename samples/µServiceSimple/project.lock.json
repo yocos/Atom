@@ -3437,6 +3437,19 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
+      "Atom.CircuitBreaker/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v1.0",
+        "dependencies": {
+          "Atom.Common": "1.0.0",
+          "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+          "Microsoft.Extensions.Configuration": "1.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+          "Microsoft.NETCore.App": "1.0.0"
+        }
+      },
       "Atom.Common/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
@@ -9304,6 +9317,10 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
+    "Atom.CircuitBreaker/1.0.0": {
+      "type": "project",
+      "path": "../../src/Atom.CircuitBreaker/project.json"
+    },
     "Atom.Common/1.0.0": {
       "type": "project",
       "path": "../../src/Atom.Common/project.json"
@@ -9319,6 +9336,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Atom.CircuitBreaker >= 1.0.0",
       "Atom.Common >= 1.0.0",
       "Atom.ServiceDiscovery.Abstractions >= 1.0.0",
       "Atom.ServiceDiscovery.Consul >= 1.0.0",

@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "Microsoft.NETCore.App": {
-      "version": "1.0.0",      
+      "version": "1.0.0",
       "type": "platform"
     },
     "Microsoft.AspNetCore.Mvc": "1.0.*",
@@ -15,43 +15,39 @@
     "Microsoft.Extensions.Logging.Console": "1.0.*",
     "Microsoft.Extensions.Logging.Debug": "1.0.*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.*",
-
-    "Atom.Common" : {
-      "version" : "1.0.0",
-      "Target" : "Project"
+    "Atom.Common": {
+      "version": "1.0.0",
+      "Target": "Project"
     },
-
-    "Atom.ServiceDiscovery.Abstractions":  {
-      "version" : "1.0.0",
-      "Target" : "Project"
+    "Atom.ServiceDiscovery.Abstractions": {
+      "version": "1.0.0",
+      "Target": "Project"
     },
-    "Atom.ServiceDiscovery.Consul":  {
-      "version" : "1.0.0",
-      "Target" : "Project"
+    "Atom.ServiceDiscovery.Consul": {
+      "version": "1.0.0",
+      "Target": "Project"
     },
+    "Atom.CircuitBreaker": {
+      "version": "1.0.0",
+      "Target": "Project"
+    }
   },
-
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"
   },
-
   "frameworks": {
-    "netcoreapp1.0": {     
-    }
+    "netcoreapp1.0": {}
   },
-
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "debugType": "portable"
   },
-
   "runtimeOptions": {
     "configProperties": {
       "System.GC.Server": true
     }
   },
-
   "publishOptions": {
     "include": [
       "wwwroot",
@@ -61,11 +57,11 @@
       "web.config"
     ]
   },
-
   "scripts": {
-    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+    "postpublish": [
+      "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
+    ]
   },
-
   "tooling": {
     "defaultNamespace": "µServiceSimple"
   }
