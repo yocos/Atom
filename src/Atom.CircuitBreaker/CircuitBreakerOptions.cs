@@ -11,11 +11,6 @@ namespace Atom.CircuitBreaker
 {
     public class CircuitBreakerOptions
     {
-        public bool UseCircuitBreakers { get; set; } = true;
-        public bool IgnoreTimeouts { get; set; } = true;
-        public int Timeout { get; set; } = 2000;
-        public int Bulkhead { get; set; } = 10;
-
         public Dictionary<string, GroupOptions> Groups { get; } = new Dictionary<string, GroupOptions>();
         public Dictionary<string, CommandOptions> Commands { get; } = new Dictionary<string, CommandOptions>();
 
@@ -23,6 +18,12 @@ namespace Atom.CircuitBreaker
 
     public class GroupOptions
     {
+        public bool CircuitBreakerForceClosed { get; set; } = false;
+        public bool CircuitBreakerForceOpen { get; set; } = false;
+        public int CircuitBreakerSleepWindowInMilliseconds { get; set; } = 200;
+        public long CircuitBreakerRequestVolumeThreshold { get; set; }
+        public int CircuitBreakerErrorThresholdPercentage { get; set; }
+
         public long? Timeout { get; set; }
     }
 

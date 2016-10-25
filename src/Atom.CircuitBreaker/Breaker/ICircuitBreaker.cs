@@ -1,6 +1,6 @@
 namespace Atom.CircuitBreaker
 {
-    public interface CircuitBreaker
+    public interface ICircuitBreaker
     {
 
         /// <summary>

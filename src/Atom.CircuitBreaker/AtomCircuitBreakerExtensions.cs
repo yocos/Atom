@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<CircuitBreakerOptions>(configuration.GetSection("circuitBreaker"));
             services.AddSingleton<IOptions<CircuitBreakerOptions>, OptionsWrapper<CircuitBreakerOptions>>();
 
+
             //Register the circuitBreaker Context 
             //==> TODO register after ending the Mjolnir rewriting
             // services.AddSingleton<ICommandContext, CommandContext>();
